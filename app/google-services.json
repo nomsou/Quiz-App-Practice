@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "593710948375",
+    "project_id": "quiz-app-practice-nomso",
+    "storage_bucket": "quiz-app-practice-nomso.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593710948375:android:3b079e502852fbf673bc52",
+        "android_client_info": {
+          "package_name": "com.example.quizapppractice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUzjCqEf_J17Ko1Oy08Z4-XJAJRqcOnpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
