@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,6 +25,7 @@ import com.example.quizapppractice.R;
 import com.example.quizapppractice.viewmodel.QuestionViewModel;
 import com.example.quizapppractice.viewmodel.QuizListViewModel;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -41,7 +43,10 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
     private boolean canAnswer = false;
     private long timer;
     private CountDownTimer countDownTimer;
-    private int  notAnswered = 0;
+    private int notAnswered = 0;
+    private int correctAnswer = 0;
+    private int wrongAnswer = 0;
+    private String answer = "";
 
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +56,7 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
                 getInstance(getActivity().getApplication())).get(QuestionViewModel.class);
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,6 +74,7 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
         option1Btn = view.findViewById(R.id.option1Btn);
         option2Btn = view.findViewById(R.id.option2Btn);
         option3Btn = view.findViewById(R.id.option3Btn);
+        option4Btn = view.findViewById(R.id.option3Btn);
         nextQueBtn = view.findViewById(R.id.nextQueBtn);
         ansFeedBackTv = view.findViewById(R.id.ansFeedbackTv);
         questionTv = view.findViewById(R.id.quizQuestionTv);
@@ -95,12 +102,12 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
         loadData();
     }
 
-    private void loadData(){
+    private void loadData() {
         enableOptions();
         loadQuestions(1);
     }
 
-    private void enableOptions(){
+    private void enableOptions() {
         option1Btn.setVisibility(View.VISIBLE);
         option2Btn.setVisibility(View.VISIBLE);
         option3Btn.setVisibility(View.VISIBLE);
@@ -118,7 +125,7 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void loadQuestions(int i){
+    private void loadQuestions(int i) {
 
         currentQueNo = i;
         viewModel.getQuestionMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<QuestionModel>>() {
@@ -129,25 +136,26 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
                 option2Btn.setText(questionModels.get(i - 1).getOption_b());
                 option3Btn.setText(questionModels.get(i - 1).getOption_c());
                 option4Btn.setText(questionModels.get(i - 1).getOption_d());
-                timer = questionModels.get(i-1).getTimer();
-//                answer = questionModels.get(i-1).getAnswer();
+                timer = questionModels.get(i - 1).getTimer();
+                answer = questionModels.get(i-1).getAnswer();
             }
         });
 
-        startTimer(i);
+        startTimer();
         canAnswer = true;
 
     }
 
-    private void startTimer(int i){
+    private void startTimer() {
         timerCountTv.setText(String.valueOf(timer));
+        progressBar.setVisibility(View.VISIBLE);
         countDownTimer = new CountDownTimer(timer * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 // update time
                 timerCountTv.setText(millisUntilFinished / 1000 + "");
 
-                Long percent = millisUntilFinished/(timer*10);
+                Long percent = millisUntilFinished / (timer * 10);
                 progressBar.setProgress(percent.intValue());
             }
 
@@ -155,7 +163,7 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
             public void onFinish() {
                 canAnswer = false;
                 ansFeedBackTv.setText("Times Up !! No answer selected");
-                notAnswered ++;
+                notAnswered++;
                 showNextBtn();
             }
         }.start();
@@ -163,11 +171,11 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showNextBtn() {
-        if (currentQueNo == totalQuestions){
+        if (currentQueNo == totalQuestions) {
             nextQueBtn.setText("Submit");
             nextQueBtn.setEnabled(true);
             nextQueBtn.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             nextQueBtn.setVisibility(View.VISIBLE);
             nextQueBtn.setEnabled(true);
             ansFeedBackTv.setVisibility(View.VISIBLE);
@@ -176,38 +184,62 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.option1Btn:
-                verifyAnswer(option1Btn);
-                break;
-            case R.id.option2Btn:
-                verifyAnswer(option2Btn);
-                break;
-            case R.id.option3Btn:
-                verifyAnswer(option3Btn);
-                break;
-            case R.id.option4Btn:
-                verifyAnswer(option4Btn);
-                break;
-            case R.id.nextQueBtn:
-                if (currentQueNo == totalQuestions){
-                    submitResults();
-                }else{
-                    currentQueNo ++;
-                    loadQuestions(currentQueNo);
-                    resetOptions();
-                }
-                break;
+        int viewId = v.getId();
+
+        if (viewId == R.id.option1Btn) {
+            verifyAnswer(option1Btn);
+        } else if (viewId == R.id.option2Btn) {
+            verifyAnswer(option2Btn);
+        } else if (viewId == R.id.option3Btn) {
+            verifyAnswer(option3Btn);
+        } else if (viewId == R.id.option4Btn) {
+            verifyAnswer(option4Btn);
+        } else if (viewId == R.id.nextQueBtn) {
+            if (currentQueNo == totalQuestions) {
+                submitResults();
+            } else {
+                currentQueNo++;
+                loadQuestions(currentQueNo);
+                resetOptions();
+            }
         }
     }
 
-    private void resetOptions(){
-
+    private void resetOptions() {
+        ansFeedBackTv.setVisibility(View.INVISIBLE);
+        nextQueBtn.setVisibility(View.INVISIBLE);
+        nextQueBtn.setEnabled(false);
+        option1Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple_500));
+        option2Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple_500));
+        option3Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple_500));
+        option4Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple_500));
     }
 
-    private void submitResults(){
+    private void submitResults() {
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("correct", correctAnswer);
+        resultMap.put("wrong", wrongAnswer);
+        resultMap.put("notAnswered", notAnswered);
 
+        viewModel.addResults(resultMap);
+        navController.navigate(R.id.action_quizFragment_to_resultFragment);
     }
 
-    private void verifyAnswer (Button button){}
+    private void verifyAnswer(Button button) {
+        if (canAnswer) {
+            if (answer.equals(button.getText())) {
+                button.setBackground(ContextCompat.getDrawable(getContext(), R.color.green));
+                correctAnswer++;
+                ansFeedBackTv.setText("Correct Answer");
+            } else {
+                button.setBackground(ContextCompat.getDrawable(getContext(), R.color.red));
+                wrongAnswer++;
+                ansFeedBackTv.setText("Wrong Answer \nCorrect Answer :" + answer);
+            }
+        }
+
+        canAnswer = false;
+        countDownTimer.cancel();
+        showNextBtn();
+    }
 }
