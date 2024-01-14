@@ -74,7 +74,7 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
         option1Btn = view.findViewById(R.id.option1Btn);
         option2Btn = view.findViewById(R.id.option2Btn);
         option3Btn = view.findViewById(R.id.option3Btn);
-        option4Btn = view.findViewById(R.id.option3Btn);
+        option4Btn = view.findViewById(R.id.option4Btn);
         nextQueBtn = view.findViewById(R.id.nextQueBtn);
         ansFeedBackTv = view.findViewById(R.id.ansFeedbackTv);
         questionTv = view.findViewById(R.id.quizQuestionTv);
@@ -85,6 +85,7 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
         quizId = QuizFragmentArgs.fromBundle(getArguments()).getQuizId();
         totalQuestions = QuizFragmentArgs.fromBundle(getArguments()).getTotalQueCount();
         viewModel.setQuizId(quizId);
+        viewModel.getQuestions();
 
         option1Btn.setOnClickListener(this);
         option2Btn.setOnClickListener(this);
@@ -131,17 +132,19 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
         viewModel.getQuestionMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<QuestionModel>>() {
             @Override
             public void onChanged(List<QuestionModel> questionModels) {
-                questionTv.setText(questionModels.get(i - 1).getQuestion());
+                questionTv.setText(String.valueOf(currentQueNo) + ") " + questionModels.get(i - 1).getQuestion());
                 option1Btn.setText(questionModels.get(i - 1).getOption_a());
                 option2Btn.setText(questionModels.get(i - 1).getOption_b());
                 option3Btn.setText(questionModels.get(i - 1).getOption_c());
                 option4Btn.setText(questionModels.get(i - 1).getOption_d());
                 timer = questionModels.get(i - 1).getTimer();
                 answer = questionModels.get(i-1).getAnswer();
+
+                questionNumberTv.setText(String.valueOf(currentQueNo));
+                startTimer();
             }
         });
 
-        startTimer();
         canAnswer = true;
 
     }
@@ -222,7 +225,11 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
         resultMap.put("notAnswered", notAnswered);
 
         viewModel.addResults(resultMap);
-        navController.navigate(R.id.action_quizFragment_to_resultFragment);
+
+        QuizFragmentDirections.ActionQuizFragmentToResultFragment action =
+                QuizFragmentDirections.actionQuizFragmentToResultFragment();
+        action.setQuizId(quizId);
+        navController.navigate(action);
     }
 
     private void verifyAnswer(Button button) {
