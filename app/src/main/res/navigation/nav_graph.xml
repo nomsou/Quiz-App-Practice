@@ -58,6 +58,10 @@
         <action
             android:id="@+id/action_detailsFragment_to_quizFragment"
             app:destination="@id/quizFragment" />
+        <argument
+            android:name="position"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/quizFragment"

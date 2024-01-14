@@ -47,4 +47,5 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
 
+    apply(plugin = "androidx.navigation.safeargs")
 }
