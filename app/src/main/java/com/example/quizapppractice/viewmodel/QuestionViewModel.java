@@ -26,6 +26,7 @@ public class QuestionViewModel extends ViewModel implements QuestionRepository.O
 
     public void setQuizId(String quizId){
         repository.setQuizId(quizId);
+        repository.getQuestions();
     }
 
     @Override
