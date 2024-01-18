@@ -212,10 +212,10 @@ public class QuizFragment extends Fragment implements View.OnClickListener {
         ansFeedBackTv.setVisibility(View.INVISIBLE);
         nextQueBtn.setVisibility(View.INVISIBLE);
         nextQueBtn.setEnabled(false);
-        option1Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple_500));
-        option2Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple_500));
-        option3Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple_500));
-        option4Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple_500));
+        option1Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple));
+        option2Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple));
+        option3Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple));
+        option4Btn.setBackground(ContextCompat.getDrawable(getContext(), R.color.purple));
     }
 
     private void submitResults() {

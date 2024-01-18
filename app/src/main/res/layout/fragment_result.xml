@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple"
+    android:background="@color/purple2"
     tools:context=".views.ResultFragment">
 
 
@@ -15,7 +15,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:background="@color/purple_500"
+        android:background="@color/purple"
         android:text="Go To Home"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,9 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
-        android:textSize="17sp"
-        android:textColor="@color/black"
         android:text="Wrong Answers :"
+        android:textColor="@color/black"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -66,9 +66,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
-        android:textSize="17sp"
-        android:textColor="@color/black"
         android:text="Not Answered Questions :"
+        android:textColor="@color/black"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
@@ -77,9 +77,9 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:progressDrawable="@drawable/circular_progressbar"
         android:layout_marginTop="24dp"
         android:indeterminateTint="@color/purple_500"
+        android:progressDrawable="@drawable/circular_progressbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

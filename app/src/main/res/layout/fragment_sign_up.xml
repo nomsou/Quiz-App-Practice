@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple"
+    android:background="@color/purple2"
     tools:context=".views.SignUpFragment">
 
     <TextView
@@ -127,6 +127,8 @@
         android:text="Sign Up"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:background="@color/purple"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.382"
