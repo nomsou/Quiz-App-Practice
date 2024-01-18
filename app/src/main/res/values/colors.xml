@@ -11,4 +11,5 @@
     <color name="teal_700">#00796B</color>
     <color name="green">#44EA36</color>
     <color name="red">#DF2F2F</color>
+    <color name="feint">#00000000</color>
 </resources>
